@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+
+  client:
+    container_name: docker_angular2_nginx-client
+    command: /script/start.sh
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/code:/appcode
+    ports:
+      - "8080:8080"
+
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: docker_angular2_nginx-nginx
+    ports:
+      - "80:8080"
+    volumes_from:
+      - client
+    links:
+      - client:client
